@@ -8,9 +8,6 @@ A web application that predicts your annual carbon emissions (in tons/year) base
 - Instant results with AJAX (no page reload)
 - Model, scaler, and feature columns loaded from pre-trained files
 
-## Demo
-![screenshot](screenshot.png) <!-- Add a screenshot if available -->
-
 ## Getting Started
 
 ### Requirements
