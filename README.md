@@ -2,6 +2,9 @@
 
 A web application that predicts your annual carbon emissions (in tons/year) based on your lifestyle and consumption habits. Powered by a machine learning model and built with Flask.
 
+🌍 Visit the live app here:
+🔗 https://carbonfootprintpredictor.onrender.com/
+
 ## Features
 - Modern, responsive UI for easy data entry
 - Predicts annual carbon emissions based on user input
