@@ -60,8 +60,7 @@ CarbonFootPrint/
 ```
 
 ## Credits
-- UI and backend: [Your Name]
-- Machine learning model: [Your Data/Source]
+- UI and backend: Deepshika Chnad
 
 ## License
 This project is for educational use only and is not licensed for commercial use.
