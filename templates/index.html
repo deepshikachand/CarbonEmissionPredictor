@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -282,6 +282,282 @@
         actionArea.innerHTML = `<div class="result-card" style="background:#ffeaea;color:#b00020;border:2px solid #b00020;">Error: ${err.message}</div>`;
         console.error(err);
       }
+    });
+  </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Carbon Emission Predictor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #f7f8fa;
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .title {
+      font-size: 3rem;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 40px;
+      margin-bottom: 0;
+      letter-spacing: -2px;
+    }
+    .subtitle {
+      font-size: 2rem;
+      font-weight: 600;
+      text-align: center;
+      margin: 0 0 10px 0;
+      letter-spacing: 2px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 40px 32px 32px 32px;
+      max-width: 620px;
+      width: 100%;
+      margin: 32px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    label {
+      font-size: 1.08rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+      color: #222;
+    }
+    input[type="number"], select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: #fafbfc;
+      margin-bottom: 2px;
+      transition: border 0.2s;
+    }
+    input[type="number"]:focus, select:focus {
+      border: 1.5px solid #4f8cff;
+      outline: none;
+    }
+    input[type="checkbox"], input[type="radio"] {
+      margin-right: 8px;
+      accent-color: #4f8cff;
+    }
+    .form-group {
+      margin-bottom: 10px;
+    }
+    input[type="submit"] {
+      background: #4f8cff;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 0;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    input[type="submit"]:hover {
+      background: #2563eb;
+    }
+    .result-card {
+      margin-top: 24px;
+      padding: 18px 16px;
+      background: #e8f9ee;
+      border: 2px solid #34c759;
+      border-radius: 12px;
+      color: #1b5e20;
+      font-size: 1.2rem;
+      text-align: center;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(52,199,89,0.08);
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="title">Carbon Emissions Predictor</div>
+  <div class="card">
+    <div class="subtitle">Enter Your Details</div>
+    <form id="prediction-form">
+      <div class="form-group">
+        <label>Monthly Grocery Bill:</label>
+        <input type="number" name="Monthly_Grocery_Bill" step="0.01" required>
+      </div>
+      <div class="form-group">
+        <label>Vehicle Monthly Distance (Km):</label>
+        <input type="number" name="Vehicle_Monthly_Distance_Km" step="0.01" required>
+      </div>
+      <div class="form-group">
+        <label>Waste Bag Weekly Count:</label>
+        <input type="number" name="Waste_Bag_Weekly_Count" required>
+      </div>
+      <div class="form-group">
+        <label>How Long TV/PC Daily (Hours):</label>
+        <input type="number" name="How_Long_TV_PC_Daily_Hour" step="0.1" required>
+      </div>
+      <div class="form-group">
+        <label>How Many New Clothes Monthly:</label>
+        <input type="number" name="How_Many_New_Clothes_Monthly" required>
+      </div>
+      <div class="form-group">
+        <label>How Long Internet Daily (Hours):</label>
+        <input type="number" name="How_Long_Internet_Daily_Hour" step="0.1" required>
+      </div>
+
+      <!-- Dummies -->
+      <div class="form-group">
+        <label>Sex:</label><br>
+        <input type="radio" name="Sex_male"> Male
+        <input type="radio" name="Sex_female"> Female
+      </div>
+
+      <div class="form-group">
+        <label>Body Type:</label><br>
+        <input type="radio" name="Body Type_normal"> Normal
+        <input type="radio" name="Body Type_underweight"> Underweight
+        <input type="radio" name="Body Type_overweight"> Overweight
+        <input type="radio" name="Body Type_obese"> Obese
+      </div>
+
+      <div class="form-group">
+        <label>Diet:</label><br>
+        <input type="radio" name="Diet_vegan"> Vegan
+        <input type="radio" name="Diet_vegetarian"> Vegetarian
+        <input type="radio" name="Diet_pescatarian"> Pescatarian
+        <input type="radio" name="Diet_omnivore"> Omnivore
+      </div>
+
+      <div class="form-group">
+        <label>Recycling:</label><br>
+        <input type="checkbox" name="Recycling_Paper"> Paper
+        <input type="checkbox" name="Recycling_Plastic"> Plastic
+        <input type="checkbox" name="Recycling_Glass"> Glass
+        <input type="checkbox" name="Recycling_Metal"> Metal
+      </div>
+
+      <div class="form-group">
+        <label>Cooking With:</label><br>
+        <input type="checkbox" name="Cooking_Stove"> Stove
+        <input type="checkbox" name="Cooking_Oven"> Oven
+        <input type="checkbox" name="Cooking_Grill"> Grill
+        <input type="checkbox" name="Cooking_Microwave"> Microwave
+        <input type="checkbox" name="Cooking_Airfryer"> Airfryer
+      </div>
+
+      <div class="form-group">
+        <label>How Often Shower:</label><br>
+        <input type="radio" name="How Often Shower_less frequently"> Less Frequently
+        <input type="radio" name="How Often Shower_more frequently"> More Frequently
+        <input type="radio" name="How Often Shower_twice a day"> Twice a Day
+        <input type="radio" name="How Often Shower_daily"> Daily
+      </div>
+
+      <div class="form-group">
+        <label>Heating Energy Source:</label><br>
+        <input type="checkbox" name="Heating Energy Source_coal"> Coal
+        <input type="checkbox" name="Heating Energy Source_wood"> Wood
+        <input type="checkbox" name="Heating Energy Source_natural gas"> Natural Gas
+        <input type="checkbox" name="Heating Energy Source_electricity"> Electricity
+      </div>
+
+      <div class="form-group">
+        <label>Transport:</label><br>
+        <input type="radio" name="Transport" value="Transport_private"> Private
+        <input type="radio" name="Transport" value="Transport_public"> Public
+        <input type="radio" name="Transport" value="Transport_walk/bicycle"> Walk/Bicycle
+      </div>
+
+      <div class="form-group">
+        <label>Vehicle Type:</label><br>
+        <input type="checkbox" name="Vehicle Type_petrol"> Petrol
+        <input type="checkbox" name="Vehicle Type_diesel"> Diesel
+        <input type="checkbox" name="Vehicle Type_hybrid"> Hybrid
+        <input type="checkbox" name="Vehicle Type_lpg"> LPG
+        <input type="checkbox" name="Vehicle Type_electric"> Electric
+        <input type="checkbox" name="Vehicle Type_no_vehicle"> No Vehicle
+      </div>
+
+      <div class="form-group">
+        <label>Social Activity:</label><br>
+        <input type="radio" name="Social Activity_sometimes"> Sometimes
+        <input type="radio" name="Social Activity_often"> Often
+        <input type="radio" name="Social Activity_never"> Never
+      </div>
+
+      <div class="form-group">
+        <label>Frequency of Traveling by Air:</label><br>
+        <input type="radio" name="Frequency of Traveling by Air_never"> Never
+        <input type="radio" name="Frequency of Traveling by Air_rarely"> Rarely
+        <input type="radio" name="Frequency of Traveling by Air_frequently"> Frequently
+        <input type="radio" name="Frequency of Traveling by Air_very frequently"> Very Frequently
+      </div>
+
+      <div class="form-group">
+        <label>Waste Bag Size:</label><br>
+        <input type="radio" name="Waste Bag Size_small"> Small
+        <input type="radio" name="Waste Bag Size_medium"> Medium
+        <input type="radio" name="Waste Bag Size_large"> Large
+        <input type="radio" name="Waste Bag Size_extra large"> Extra Large
+      </div>
+
+      <div class="form-group">
+        <label>Transport:</label><br>
+        <input type="radio" name="Transport" value="Transport_private"> Private
+        <input type="radio" name="Transport" value="Transport_public"> Public
+        <input type="radio" name="Transport" value="Transport_walk/bicycle"> Walk/Bicycle
+      </div>
+
+      <input type="submit" value="Predict Emission">
+    </form>
+
+    <div id="result-box" class="result-card">
+      <h3 id="result-text">Predicted Annual Carbon Emission: ...</h3>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('prediction-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevents reload and scrolling to top
+
+      const form = event.target;
+      const formData = new FormData(form);
+
+      fetch('/predict', {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        const resultBox = document.getElementById('result-box');
+        const resultText = document.getElementById('result-text');
+        resultText.textContent = `Predicted Annual Carbon Emission: ${data.result} tons/year`;
+        resultBox.style.display = 'block';
+      })
+      .catch(error => {
+        alert("Prediction failed: " + error);
+      });
     });
   </script>
 </body>
