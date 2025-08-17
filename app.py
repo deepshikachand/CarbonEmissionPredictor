@@ -1,73 +1,3 @@
-# from flask import Flask, request, render_template, jsonify
-# import joblib
-# import pandas as pd
-
-# app = Flask(__name__)
-
-# # Load model, scaler, and expected column names
-# model = joblib.load("model.pkl")
-# scaler = joblib.load("scaler.pkl")
-# columns = joblib.load("columns.pkl")  # List of 45 feature names used during training
-
-# @app.route('/')
-# def home():
-#     return render_template('index.html')
-
-# @app.route('/predict', methods=['POST'])
-# def predict():
-#     input_dict = {}
-
-#     # Initialize all columns to 0
-#     for col in columns:
-#         input_dict[col] = 0
-
-#     # Parse form input
-#     form = request.form
-
-#     # Handle numeric inputs
-#     numeric_fields = [
-#         'Monthly_Grocery_Bill',
-#         'Vehicle_Monthly_Distance_Km',
-#         'Waste_Bag_Weekly_Count',
-#         'How_Long_TV_PC_Daily_Hour',
-#         'How_Many_New_Clothes_Monthly',
-#         'How_Long_Internet_Daily_Hour'
-#     ]
-
-#     for field in numeric_fields:
-#         val = form.get(field)
-#         if val:
-#             input_dict[field] = float(val)
-
-#     # Handle transport (radio buttons: value is either 'private', 'Transport_public', 'Transport_walk/bicycle')
-#     transport_val = form.get("Transport")
-#     if transport_val in ['Transport_public', 'Transport_walk/bicycle']:
-#         input_dict[transport_val] = 1
-#     # If 'private' or not selected, both remain 0 (base case)
-
-#     # Handle other one-hot fields and checkboxes
-#     for field in form:
-#         if field in columns and field not in numeric_fields and field != "Transport":
-#             input_dict[field] = 1
-
-#     # Convert to DataFrame and align with trained model's columns
-#     df = pd.DataFrame([input_dict])
-#     df = df.reindex(columns=columns, fill_value=0)
-
-#     # Scale input
-#     scaled = scaler.transform(df)
-
-#     # Predict
-#     prediction = model.predict(scaled)[0]
-
-#     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-#         result = float(prediction)
-#         return jsonify(result=round(result, 2))
-#     return render_template('index.html', result=round(prediction, 2))
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
-
 from flask import Flask, request, render_template, jsonify
 import joblib
 import pandas as pd
@@ -111,11 +41,65 @@ def predict():
             except ValueError:
                 input_dict[model_field] = 0
 
+    # Handle Sex (select dropdown)
+    sex_val = form.get("Sex_male")
+    if sex_val:
+        input_dict["Sex_male"] = int(sex_val)  # 0 for Female, 1 for Male
+
+    # Handle Body Type (select dropdown)
+    body_type_val = form.get("Body_Type")
+    if body_type_val and body_type_val != "normal":
+        body_type_col = f"Body Type_{body_type_val}"
+        if body_type_col in columns:
+            input_dict[body_type_col] = 1
+
     # Handle transport (radio input)
     transport_val = form.get("Transport")
     transport_col = f"Transport_{transport_val}"
     if transport_col in columns:
         input_dict[transport_col] = 1
+
+    # Handle Diet (radio input)
+    diet_val = form.get("Diet")
+    if diet_val and diet_val != "none":
+        diet_col = f"Diet_{diet_val}"
+        if diet_col in columns:
+            input_dict[diet_col] = 1
+
+    # Handle How Often Shower (radio input)
+    shower_val = form.get("How_Often_Shower")
+    if shower_val and shower_val != "normal":
+        shower_col = f"How Often Shower_{shower_val}"
+        if shower_col in columns:
+            input_dict[shower_col] = 1
+
+    # Handle Social Activity (radio input)
+    social_val = form.get("Social_Activity")
+    if social_val and social_val != "rarely_never":
+        social_col = f"Social Activity_{social_val}"
+        if social_col in columns:
+            input_dict[social_col] = 1
+
+    # Handle Air Travel (radio input)
+    air_val = form.get("Frequency_of_Traveling_by_Air")
+    if air_val and air_val != "occasionally":
+        air_col = f"Frequency of Traveling by Air_{air_val}"
+        if air_col in columns:
+            input_dict[air_col] = 1
+
+    # Handle Waste Bag Size (radio input)
+    waste_val = form.get("Waste_Bag_Size")
+    if waste_val and waste_val != "standard":
+        waste_col = f"Waste Bag Size_{waste_val}"
+        if waste_col in columns:
+            input_dict[waste_col] = 1
+
+    # Handle Energy Efficiency (radio input)
+    energy_val = form.get("Energy_efficiency")
+    if energy_val and energy_val != "no":
+        energy_col = f"Energy efficiency_{energy_val}"
+        if energy_col in columns:
+            input_dict[energy_col] = 1
 
     # Handle one-hot and checkbox inputs
     for field in form:
@@ -143,10 +127,13 @@ def predict():
     # Predict
     prediction = model.predict(scaled)[0]
 
+    # Convert from kg/year to tons/year (1 ton = 1000 kg)
+    prediction_tons = prediction / 1000
+
     # AJAX response or form submit result
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return jsonify(result=round(float(prediction), 2))
-    return render_template('index.html', result=round(float(prediction), 2))
+        return jsonify(result=round(float(prediction_tons), 2))
+    return render_template('index.html', result=round(float(prediction_tons), 2))
 
 if __name__ == '__main__':
     app.run(debug=True)
